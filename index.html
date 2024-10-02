@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+   /* General Body Style */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to top right, #4834d4, #22a6b3);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* City Selection and Button */
+  select, button {
+    padding: 12px;
+    margin: 10px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  /* Style the select element */
+#city {
+  width: 100%; /* Make it responsive */
+  max-width: 300px; /* Set a maximum width */
+  padding: 10px; /* Add padding for better touch area */
+  margin: 20px auto; /* Center it horizontally */
+  border: 2px solid #4CAF50; /* Green border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light gray background */
+  font-size: 16px; /* Font size */
+  color: #333; /* Text color */
+  outline: none; /* Remove default outline */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+/* Change background color on hover */
+#city:hover {
+  background-color: #e0f7fa; /* Light blue on hover */
+}
+
+/* Change border color on focus */
+#city:focus {
+  border-color: #00695c; /* Darker green when focused */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+  
+  /* Weather Information Container */
+  #weather {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  #weather h2 {
+    font-size: 2.5em;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #weather p {
+    margin: 5px 0;
+    font-size: 1.2em;
+  }
+  
+  /* Current Temperature */
+  .current-temp {
+    font-size: 5em;
+    margin: 0;
+  }
+  
+  .weather-icon {
+    font-size: 3em;
+    margin: 10px 0;
+  }
+  
+  /* Hourly Forecast */
+  .hourly-forecast {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+  }
+  
+  .hourly-forecast div {
+    text-align: center;
+  }
+  
+  .hourly-forecast img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  /* For Mobile responsiveness */
+  @media only screen and (max-width: 600px) {
+    body {
+      padding: 10px;
+    }
+  
+    #weather {
+      width: 100%;
+    }
+  
+    #weather h2 {
+      font-size: 2em;
+    }
+  
+    .current-temp {
+      font-size: 4em;
+    }
+  }
+  #local-time {
+    font-size: 1.5em;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  #weather {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .weather-icon {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    font-size: 2em;
+    margin: 10px 0;
+    color: #fff;
+  }
+  
+  .current-temp {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #fff;
+  }
+  
+  .weather-description {
+    font-size: 1.2em;
+    margin: 5px 0;
+    color: #fff;
+  }
+  
+  #local-time {
+    font-size: 1.2em;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  
+  /* General styling (default for desktops and larger screens) */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+  }
+  
+  #weather {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .weather-icon {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    font-size: 2em;
+    margin: 10px 0;
+  }
+  
+  .current-temp {
+    font-size: 1.5em;
+    margin: 10px 0;
+  }
+  
+  .weather-description {
+    font-size: 1.2em;
+    margin: 5px 0;
+  }
+  
+  #local-time {
+    font-size: 1.2em;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  /* Medium screens (e.g., tablets) */
+  @media only screen and (max-width: 1024px) {
+    body {
+      padding: 30px;
+    }
+    
+    .weather-icon {
+      width: 80px;
+      height: 80px;
+    }
+  
+    h2 {
+      font-size: 1.8em;
+    }
+  
+    .current-temp {
+      font-size: 1.3em;
+    }
+  
+    .weather-description {
+      font-size: 1.1em;
+    }
+    
+    #local-time {
+      font-size: 1.1em;
+    }
+  }
+  
+  /* Small screens (e.g., mobile phones) */
+  @media only screen and (max-width: 768px) {
+    body {
+      padding: 20px;
+    }
+    
+    .weather-icon {
+      width: 70px;
+      height: 70px;
+    }
+  
+    h2 {
+      font-size: 1.5em;
+    }
+  
+    .current-temp {
+      font-size: 1.2em;
+    }
+  
+    .weather-description {
+      font-size: 1em;
+    }
+    
+    #local-time {
+      font-size: 1em;
+    }
+  }
+  
+  /* Extra small screens (e.g., older smartphones, very small devices) */
+  @media only screen and (max-width: 480px) {
+    body {
+      padding: 10px;
+    }
+  
+    .weather-icon {
+      width: 50px;
+      height: 50px;
+    }
+  
+    h2 {
+      font-size: 1.2em;
+    }
+  
+    .current-temp {
+      font-size: 1em;
+    }
+  
+    .weather-description {
+      font-size: 0.9em;
+    }
+    
+    #local-time {
+      font-size: 0.9em;
+    }
+  }
+  
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+  <h1>Weather Application</h1>
+  <select id="city">
+    <option value="184745">Nairobi, Kenya</option>
+    <option value="186301">Mombasa, Kenya</option>
+    <option value="191245">Kisumu, Kenya</option>
+    <option value="192710">Nakuru, Kenya</option>
+    <option value="198629">Eldoret, Kenya</option>
+    <option value="200787">Malindi, Kenya</option>
+    <option value="192067">Thika, Kenya</option>
+    <option value="198344">Kitale, Kenya</option>
+    <option value="201555">Garissa, Kenya</option>
+    <option value="191038">Kakamega, Kenya</option>
+    <option value="191666">Naivasha, Kenya</option>
+    <option value="200716">Machakos, Kenya</option>
+    <option value="192112">Ruiru, Kenya</option>
+    <option value="196742">Nyeri, Kenya</option>
+    <option value="194636">Kericho, Kenya</option>
+    <option value="200787">AthiRiver, Kenya</option>
+    <option value="192710">Kiambu, Kenya</option>
+    <option value="192067">Kilifi, Kenya</option>
+    <option value="196742">Homabay, Kenya</option>
+
+    <!-- Add more cities as needed -->
+  </select>
+  
+  <button onclick="getWeather()">Get Weather</button>
+  
+  <div id="weather"></div>
+
+  <script>
+    const apiKey = '864cc69840664f89cdad16e71add5bf8';  // Your API key
+
+// Function to fetch weather data for the selected city
+function getWeather() {
+  const cityId = document.getElementById('city').value;
+
+  // Store the last selected city ID in localStorage
+  localStorage.setItem('lastCity', cityId);
+
+  fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${apiKey}&units=metric`)
+    .then(response => response.json())
+    .then(data => {
+      displayWeather(data);
+      updateTimeEverySecond(data.timezone);  // Update time every second
+    })
+    .catch(error => {
+      document.getElementById('weather').innerHTML = `<p>City data could not be retrieved. Please try again.</p>`;
+    });
+}
+
+// Function to display weather data
+function displayWeather(data) {
+  const weatherDiv = document.getElementById('weather');
+
+  // Get the weather icon from the API response
+  const iconCode = data.weather[0].icon;
+  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;  // Weather icon URL
+
+  // Display weather data with icon on top of the city's name
+  weatherDiv.innerHTML = `
+    <img src="${iconUrl}" alt="Weather icon" class="weather-icon">
+    <h2>${data.name}</h2>
+    <p class="current-temp">${data.main.temp}°C</p>
+    <p class="weather-description">${data.weather[0].description}</p>
+    <p>Wind: ${data.wind.speed} m/s | Humidity: ${data.main.humidity}%</p>
+    <p>Feels like: ${data.main.feels_like}°C</p>
+  `;
+}
+
+// Function to update and display time every second for the selected city
+function updateTimeEverySecond(timezoneOffset) {
+  let timeDiv = document.getElementById('local-time');
+  if (!timeDiv) {
+    timeDiv = document.createElement('p');
+    timeDiv.id = 'local-time';
+    document.getElementById('weather').appendChild(timeDiv);
+  }
+
+  function updateCityTime() {
+    const currentTime = new Date();
+    const cityTime = new Date(currentTime.getTime() + timezoneOffset * 1000);
+    const hours = cityTime.getUTCHours();
+    const minutes = cityTime.getUTCMinutes().toString().padStart(2, '0');
+    const seconds = cityTime.getUTCSeconds().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedTime = `${hours % 12 || 12}:${minutes}:${seconds} ${ampm}`;
+
+    timeDiv.innerText = `Local Time: ${formattedTime}`;
+  }
+
+  setInterval(updateCityTime, 1000);
+}
+
+// Load the last selected city when the page is loaded
+function loadLastCity() {
+  const lastCity = localStorage.getItem('lastCity');
+  if (lastCity) {
+    document.getElementById('city').value = lastCity;
+    getWeather();  // Fetch weather data for the last selected city
+  }
+}
+
+// Load the last selected city on page load
+window.onload = loadLastCity;
+
+
+
+  </script>
+</body>
+</html>
