@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather App</title>
   <style>
-   /* General Body Style */
+    /* General Body Style */
 body {
     font-family: 'Roboto', sans-serif;
     background: linear-gradient(to top right, #4834d4, #22a6b3);
@@ -301,62 +301,51 @@ body {
   }
   
   </style>
-
 </head>
 <body>
 
-  <h1>Weather Application</h1>
-  <select id="city">
-    <option value="184745">Nairobi, Kenya</option>
-    <option value="186301">Mombasa, Kenya</option>
-    <option value="191245">Kisumu, Kenya</option>
-    <option value="198629">Eldoret, Kenya</option>
-    <option value="200787">AthiRiver, Kenya</option>
-    <option value="192710">Kiambu, Kenya</option>
-    <option value="192067">Kilifi, Kenya</option>
-    <option value="196742">Homabay, Kenya</option>
-    <option value="191038">Kitui, Kenya</option>
-    <option value="187968">Malindi, Kenya</option>
+  <h1>Current Weather</h1>
 
-    <!-- Add more cities as needed -->
-  </select>
-  
+  <!-- Replacing the dropdown with an input search field -->
+  <input type="text" id="city" placeholder="Enter city name" />
+
   <button onclick="getWeather()">Get Weather</button>
-  
+
   <div id="weather"></div>
-
-
 
   <script>
     const apiKey = '864cc69840664f89cdad16e71add5bf8';  // Your API key
 
-// Function to fetch weather data for the selected city
+// Function to fetch weather data based on the city name entered by the user
 function getWeather() {
-  const cityId = document.getElementById('city').value;
+  const cityName = document.getElementById('city').value;
 
-  // Store the last selected city ID in localStorage
-  localStorage.setItem('lastCity', cityId);
+  // Store the last searched city name in localStorage
+  localStorage.setItem('lastCity', cityName);
 
-  fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${apiKey}&units=metric`)
+  // Fetch weather data using the city name instead of city ID
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`)
     .then(response => response.json())
     .then(data => {
-      displayWeather(data);
-      updateTimeEverySecond(data.timezone);  // Update time every second
+      if (data.cod === 200) { // Check if the city was found
+        displayWeather(data);
+        updateTimeEverySecond(data.timezone);  // Update time every second
+      } else {
+        document.getElementById('weather').innerHTML = '<p>City not found. Please try again.</p>';
+      }
     })
     .catch(error => {
-      document.getElementById('weather').innerHTML = `<p>City data could not be retrieved. Please try again.</p>`;
+      document.getElementById('weather').innerHTML = '<p>City data could not be retrieved. Please try again.</p>';
     });
 }
 
-// Function to display weather data
+// Function to display weather data (remains the same)
 function displayWeather(data) {
   const weatherDiv = document.getElementById('weather');
 
-  // Get the weather icon from the API response
   const iconCode = data.weather[0].icon;
-  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;  // Weather icon URL
+  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
-  // Display weather data with icon on top of the city's name
   weatherDiv.innerHTML = `
     <img src="${iconUrl}" alt="Weather icon" class="weather-icon">
     <h2>${data.name}</h2>
@@ -367,7 +356,7 @@ function displayWeather(data) {
   `;
 }
 
-// Function to update and display time every second for the selected city
+// Function to update and display time every second for the selected city (remains the same)
 function updateTimeEverySecond(timezoneOffset) {
   let timeDiv = document.getElementById('local-time');
   if (!timeDiv) {
@@ -391,19 +380,17 @@ function updateTimeEverySecond(timezoneOffset) {
   setInterval(updateCityTime, 1000);
 }
 
-// Load the last selected city when the page is loaded
+// Load the last searched city on page load
 function loadLastCity() {
   const lastCity = localStorage.getItem('lastCity');
   if (lastCity) {
     document.getElementById('city').value = lastCity;
-    getWeather();  // Fetch weather data for the last selected city
+    getWeather();  // Fetch weather data for the last searched city
   }
 }
 
-// Load the last selected city on page load
+// Load the last searched city on page load
 window.onload = loadLastCity;
-
-
 
   </script>
 </body>
